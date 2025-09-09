@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Portfolio minimalista de [Tu Nombre]. Proyectos, experiencia y contacto." />
+  <title>Portfolio · Tu Nombre</title>
+
+  <!-- Fuente opcional -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- NAV -->
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="Ir al inicio">Tu Nombre</a>
+      <nav class="desktop" aria-label="Navegación principal">
+        <ul>
+          <li><a href="#about">Sobre mí</a></li>
+          <li><a href="#projects">Proyectos</a></li>
+          <li><a href="#contact">Contacto</a></li>
+          <li><button id="themeToggle" class="btn ghost theme-toggle" aria-label="Cambiar tema">🌓</button></li>
+        </ul>
+      </nav>
+      <button class="btn mobile" id="menuBtn" aria-label="Abrir menú">☰</button>
+    </div>
+  </header>
+
+  <!-- Menú móvil -->
+  <div id="mobileMenu" hidden>
+    <div class="container menu-content">
+      <a href="#about">Sobre mí</a>
+      <a href="#projects">Proyectos</a>
+      <a href="#contact">Contacto</a>
+      <button id="themeToggleM" class="btn ghost">🌓 Tema</button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <main id="home" class="hero">
+    <div class="container hero-wrap reveal">
+      <div>
+        <div class="kicker">Diseño · Desarrollo · Estrategia</div>
+        <h1 class="title">Hola, soy <span class="accent">Tu Nombre</span>.<br/> Construyo experiencias web limpias y enfocadas.</h1>
+        <p class="subtitle">Ingeniero/a de Diseño Industrial y desarrollador/a front-end. Me apasiona crear productos útiles, accesibles y rápidos.</p>
+        <div class="cta">
+          <a class="btn" href="#projects">Ver proyectos</a>
+          <a class="btn ghost" href="#about">Sobre mí</a>
+        </div>
+      </div>
+      <div class="hero-card" aria-hidden="true">
+        <strong>Dato rápido</strong>
+        <p class="muted">+X proyectos · Core: HTML, CSS, JS · Interés por accesibilidad, rendimiento y UX.</p>
+        <div class="skills">
+          <span class="pill">HTML5</span>
+          <span class="pill">CSS Grid/Flex</span>
+          <span class="pill">JavaScript</span>
+          <span class="pill">Accesibilidad</span>
+          <span class="pill">SEO</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ABOUT -->
+  <section id="about" class="container">
+    <div class="section-head reveal">
+      <h2>Sobre mí</h2>
+      <p class="muted">Breve bio, competencias y CV</p>
+    </div>
+    <div class="about">
+      <div class="card reveal">
+        <h3>Quién soy</h3>
+        <p>Texto corto sobre tu experiencia, enfoque y valores.</p>
+        <a class="btn" href="#" download title="Descargar CV">Descargar CV (PDF)</a>
+      </div>
+      <div class="card reveal">
+        <h3>Skills</h3>
+        <div class="skills">
+          <span class="pill">HTML Semántico</span>
+          <span class="pill">CSS (BEM / Utility-first)</span>
+          <span class="pill">Animaciones / Transiciones</span>
+          <span class="pill">JavaScript</span>
+          <span class="pill">Performance</span>
+          <span class="pill">SEO básico</span>
+          <span class="pill">Git / GitHub</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="container">
+    <div class="section-head reveal">
+      <h2>Proyectos</h2>
+      <p class="muted">Una selección reciente</p>
+    </div>
+    <div class="grid">
+      <!-- Card 1 -->
+      <article class="card reveal">
+        <img src="img/project1.jpg" alt="Vista previa del Proyecto A" />
+        <div class="content">
+          <div class="tag">UX · Front-end</div>
+          <h3>Proyecto A</h3>
+          <p class="muted">Landing minimalista con foco en conversión y velocidad.</p>
+          <button class="btn ghost open-modal" data-project='{"title":"Proyecto A","stack":"HTML · CSS · JS","desc":"Caso de estudio con métricas de rendimiento (LCP < 1.2s).","link":"#"}'>Ver detalle</button>
+        </div>
+      </article>
+      <!-- Card 2 -->
+      <article class="card reveal">
+        <img src="img/project2.jpg" alt="Vista previa del Proyecto B" />
+        <div class="content">
+          <div class="tag">UI · Animaciones</div>
+          <h3>Proyecto B</h3>
+          <p class="muted">Interacciones sutiles con IntersectionObserver y transiciones CSS.</p>
+          <button class="btn ghost open-modal" data-project='{"title":"Proyecto B","stack":"HTML · CSS","desc":"Microinteracciones y scroll reveal accesible.","link":"#"}'>Ver detalle</button>
+        </div>
+      </article>
+      <!-- Card 3 -->
+      <article class="card reveal">
+        <img src="img/project3.jpg" alt="Vista previa del Proyecto C" />
+        <div class="content">
+          <div class="tag">Optimización</div>
+          <h3>Proyecto C</h3>
+          <p class="muted">Mejoras de performance y accesibilidad auditadas con Lighthouse.</p>
+          <button class="btn ghost open-modal" data-project='{"title":"Proyecto C","stack":"JS · A11y","desc":"Auditoría + refactor para mejorar CLS y ARIA.","link":"#"}'>Ver detalle</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="container">
+    <div class="section-head reveal">
+      <h2>Contacto</h2>
+      <p class="muted">Escríbeme y te respondo pronto</p>
+    </div>
+    <div class="about">
+      <div class="card reveal">
+        <h3>Redes</h3>
+        <p class="muted">Preferibles: email y LinkedIn.</p>
+        <p><a class="btn ghost" href="mailto:tuemail@dominio.com" aria-label="Enviar correo">✉️ tuemail@dominio.com</a></p>
+        <p><a class="btn ghost" href="#" target="_blank" rel="noopener">LinkedIn</a></p>
+        <p><a class="btn ghost" href="#" target="_blank" rel="noopener">GitHub</a></p>
+      </div>
+      <div class="card reveal" aria-labelledby="formTitle">
+        <h3 id="formTitle">Formulario rápido</h3>
+        <!-- Para usar con Formspree: action="https://formspree.io/f/XXXXXXX" method="POST" -->
+        <form id="contactForm" novalidate>
+          <label>
+            <span class="muted">Nombre</span>
+            <input name="name" type="text" placeholder="Tu nombre" required minlength="2" />
+          </label>
+          <label>
+            <span class="muted">Email</span>
+            <input name="email" type="email" placeholder="tucorreo@ejemplo.com" required />
+          </label>
+          <label>
+            <span class="muted">Mensaje</span>
+            <textarea name="message" placeholder="¿En qué puedo ayudarte?" required minlength="10"></textarea>
+          </label>
+          <button class="btn" type="submit">Enviar</button>
+          <p id="formMsg" class="muted" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container foot">
+      <span>© <span id="year"></span> · Tu Nombre</span>
+      <a class="muted" href="#home">Volver arriba ↑</a>
+    </div>
+  </footer>
+
+  <!-- MODAL (proyectos) -->
+  <dialog id="projectModal">
+    <div class="modal-head">
+      <strong id="mTitle">Título</strong>
+      <form method="dialog"><button class="btn ghost" aria-label="Cerrar">✕</button></form>
+    </div>
+    <div class="modal-body">
+      <div class="muted" id="mStack"></div>
+      <p id="mDesc"></p>
+      <a id="mLink" class="btn" href="#" target="_blank" rel="noopener">Visitar proyecto</a>
+    </div>
+  </dialog>
+
+  <!-- JS -->
+  <script src="js/functions.js"></script>
+</body>
+</html>
