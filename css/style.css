@@ -220,15 +220,58 @@ section {
   gap: var(--space-3);
   margin-top: var(--space-2);
 }
+
+/* Base de los pills */
 .pill {
-  border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
-  padding: 12px 14px;
+  position: relative;
+  padding: 12px 16px 12px 42px; /* hueco para el icono */
   border-radius: 999px;
   font-size: 15px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  justify-content: flex-start;
+  text-align: left;
+  background: rgba(255,255,255,0.08); /* sin borde, fondo suave */
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+  cursor: default;
+  animation: float 4s ease-in-out infinite;
+  transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+}
+
+/* Iconos siempre visibles */
+.pill::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  width: 20px; height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Iconos individuales (Devicon CDN) */
+.pill.python::before  { background-image: url('https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg'); }
+.pill.java::before    { background-image: url('https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg'); }
+.pill.linux::before   { background-image: url('https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg'); }
+.pill.js::before      { background-image: url('https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg'); }
+.pill.php::before     { background-image: url('https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg'); }
+.pill.flutter::before { background-image: url('https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg'); }
+.pill.git::before     { background-image: url('https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg'); }
+.pill.html::before    { background-image: url('https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg'); }
+.pill.css::before     { background-image: url('https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg'); }
+
+/* Hover interactivo */
+.pill:hover {
+  transform: translateY(-6px) scale(1.05);
+  background: var(--primary);
+  color: #000;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+}
+
+/* Animación ligera continua */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
 }
 
 /* PROJECTS */
