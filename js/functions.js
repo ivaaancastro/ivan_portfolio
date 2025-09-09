@@ -2,12 +2,13 @@
 const $  = (sel, ctx=document) => ctx.querySelector(sel);
 const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
 
-// Año en footer
+// Año
 $('#year').textContent = new Date().getFullYear();
 
-// ===== Tema (oscuro/claro) =====
+// Tema (oscuro/claro)
 const root = document.documentElement;
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 const THEME_KEY = 'theme';
 
 function applyTheme(t){
@@ -15,12 +16,8 @@ function applyTheme(t){
   else{ root.removeAttribute('data-theme'); }
   localStorage.setItem(THEME_KEY, t);
 }
-
-// Estado inicial
 const saved = localStorage.getItem(THEME_KEY);
-if(saved){ applyTheme(saved); }
-else if(!prefersDark.matches){ applyTheme('light'); }
-
+if(saved){ applyTheme(saved); } else if(!prefersDark.matches){ applyTheme('light'); }
 $('#themeToggle')?.addEventListener('click', ()=>{
   const isLight = root.getAttribute('data-theme') === 'light';
   applyTheme(isLight ? 'dark' : 'light');
@@ -30,7 +27,7 @@ $('#themeToggleM')?.addEventListener('click', ()=>{
   applyTheme(isLight ? 'dark' : 'light');
 });
 
-// ===== Menú móvil =====
+// Menú móvil
 const mobileMenu = $('#mobileMenu');
 $('#menuBtn')?.addEventListener('click', ()=>{
   const hidden = mobileMenu.hasAttribute('hidden');
@@ -38,13 +35,85 @@ $('#menuBtn')?.addEventListener('click', ()=>{
 });
 $$('#mobileMenu a').forEach(a=> a.addEventListener('click', ()=> mobileMenu.setAttribute('hidden','')));
 
-// ===== Scroll reveal accesible =====
+// ===== Reveal in/out con IntersectionObserver =====
 const io = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+  entries.forEach(entry=>{
+    const el = entry.target;
+    if(entry.isIntersecting){
+      el.classList.add('in');
+      if(el.hasAttribute('data-stagger')){
+        Array.from(el.children).forEach((child, i)=>{
+          child.style.transitionDelay = `${i * 60}ms`;
+          child.classList.add('in');
+        });
+      }
+    }else{
+      // Al salir, quitamos la clase para que pueda volver a animar
+      el.classList.remove('in');
+      if(el.hasAttribute('data-stagger')){
+        Array.from(el.children).forEach((child)=> child.classList.remove('in'));
+      }
+    }
   });
-}, {threshold:.12});
-$$('.reveal').forEach(el=> io.observe(el));
+}, { threshold: 0.12 });
+
+$$('.reveal, [data-stagger]').forEach(el => io.observe(el));
+
+// ===== Continuous Scroll Animations (parallax / translate / fade) =====
+const parallaxEls = $$('[data-parallax]');
+const scrollYEls  = $$('[data-scroll-y]');
+const fadeEls     = $$('[data-fade]');
+
+let ticking = false;
+function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+function updateScrollAnimations(){
+  const vh = window.innerHeight;
+  const scrollY = window.scrollY || window.pageYOffset;
+
+  // Parallax (valor = factor de desplazamiento)
+  parallaxEls.forEach(el=>{
+    const factor = parseFloat(el.getAttribute('data-parallax')) || 0.1;
+    const rect = el.getBoundingClientRect();
+    const offset = (rect.top + rect.height * .5) - (vh * .5); // distancia del centro al centro
+    const translate = offset * factor * -1; // movimiento contrario al scroll
+    el.style.transform = `translate3d(0, ${translate.toFixed(2)}px, 0)`;
+  });
+
+  // Translate Y continuo (cards)
+  scrollYEls.forEach(el=>{
+    const factor = parseFloat(el.getAttribute('data-scroll-y')) || 0.04;
+    const rect = el.getBoundingClientRect();
+    // mapeo: cuanto más lejos del centro, más desplazamiento
+    const offset = (rect.top + rect.height * .5) - (vh * .5);
+    const translate = offset * factor * 0.6; // un poco más suave
+    el.style.transform = `translate3d(0, ${translate.toFixed(2)}px, 0)`;
+  });
+
+  // Fade continuo (según visibilidad)
+  fadeEls.forEach(el=>{
+    const rect = el.getBoundingClientRect();
+    const visiblePx = Math.min(vh, Math.max(0, vh - Math.max(0, rect.top) - Math.max(0, vh - rect.bottom)));
+    const visRatio = clamp(visiblePx / Math.min(vh, rect.height || vh), 0, 1);
+    // Empieza muy tenue y sube a 1 cuando el bloque está bien dentro
+    const opacity = clamp(visRatio * 1.2, 0.08, 1);
+    el.style.opacity = opacity.toFixed(3);
+  });
+
+  ticking = false;
+}
+
+function onScroll(){
+  if(prefersReduced.matches) return; // respetar reduce motion
+  if(!ticking){
+    window.requestAnimationFrame(updateScrollAnimations);
+    ticking = true;
+  }
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('resize', ()=> updateScrollAnimations(), { passive: true });
+// primera pasada
+updateScrollAnimations();
 
 // ===== Modal de proyectos =====
 const modal = $('#projectModal');
@@ -63,23 +132,4 @@ $$('.open-modal').forEach(btn=>{
     if(typeof modal.showModal === 'function') modal.showModal();
     else alert(`${data.title}: ${data.desc}`);
   });
-});
-
-// ===== Formulario (validación en cliente) =====
-const form = $('#contactForm');
-const formMsg = $('#formMsg');
-form?.addEventListener('submit', (e)=>{
-  e.preventDefault();
-  const fd = new FormData(form);
-  const name = (fd.get('name')||'').toString().trim();
-  const email = (fd.get('email')||'').toString().trim();
-  const message = (fd.get('message')||'').toString().trim();
-
-  if(name.length < 2){ formMsg.textContent = 'Por favor, indica tu nombre.'; return; }
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ formMsg.textContent = 'Introduce un email válido.'; return; }
-  if(message.length < 10){ formMsg.textContent = 'El mensaje es demasiado corto.'; return; }
-
-  // Ejemplo de envío fake (sustituir por Formspree u otro backend)
-  formMsg.textContent = '¡Gracias! Mensaje enviado (demo).';
-  form.reset();
 });
