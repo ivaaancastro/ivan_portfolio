@@ -273,6 +273,16 @@ section {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-3px); }
 }
+@media (max-width: 560px) {
+  .pill {
+    font-size: 14px;
+    gap: 6px;
+    padding: 10px 12px;
+  }
+  .pill i {
+    font-size: 18px; /* que no se encoja demasiado */
+  }
+}
 
 /* PROJECTS */
 #projects{
