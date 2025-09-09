@@ -277,6 +277,13 @@ section {
 #contact{
   margin-top: 8%;
 }
+#contact .section-head {
+  flex-direction: column;
+  align-items: flex-start;
+}
+#contact .section-head p {
+  margin-top: 8px;
+}
 
 input,
 textarea {
