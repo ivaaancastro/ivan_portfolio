@@ -224,14 +224,14 @@ section {
 /* Base de los pills */
 .pill {
   position: relative;
-  padding: 12px 16px 12px 42px; /* hueco para el icono */
+  padding: 12px 16px 12px 42px; /* hueco para icono a la izquierda */
   border-radius: 999px;
   font-size: 15px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   text-align: left;
-  background: rgba(255,255,255,0.08); /* sin borde, fondo suave */
+  background: rgba(255,255,255,0.08);
   box-shadow: 0 4px 12px rgba(0,0,0,.2);
   cursor: default;
   animation: float 4s ease-in-out infinite;
@@ -243,7 +243,8 @@ section {
   content: "";
   position: absolute;
   left: 14px;
-  width: 20px; height: 20px;
+  width: 20px;
+  height: 20px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -276,11 +277,12 @@ section {
 @media (max-width: 560px) {
   .pill {
     font-size: 14px;
-    gap: 6px;
-    padding: 10px 12px;
+    padding: 10px 12px 10px 38px; /* menos padding pero mantiene hueco para icono */
   }
-  .pill i {
-    font-size: 18px; /* que no se encoja demasiado */
+  .pill::before {
+    left: 10px; /* acercamos el icono */
+    width: 18px;
+    height: 18px;
   }
 }
 
