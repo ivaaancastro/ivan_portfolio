@@ -133,3 +133,36 @@ $$('.open-modal').forEach(btn=>{
     else alert(`${data.title}: ${data.desc}`);
   });
 });
+
+
+// ===== Descargar CV: robusto con fallback =====
+(() => {
+  const btn = document.querySelector('.btn.cv');
+  if (!btn) return;
+
+  // Si ya hay href + download, no hacemos nada extra
+  const href = btn.getAttribute('href');
+  if (href && btn.hasAttribute('download')) return;
+
+  // Si algún día dejas el botón sin href, define aquí la ruta:
+  const CV_PATH = href || 'assets/CV_Ivan.pdf';
+  const CV_NAME = btn.getAttribute('download') || 'Ivan_CV.pdf';
+
+  btn.addEventListener('click', (e) => {
+    // Si tiene href+download, que el navegador actúe
+    if (btn.getAttribute('href') && btn.hasAttribute('download')) return;
+
+    e.preventDefault();
+    const a = document.createElement('a');
+    a.href = CV_PATH;
+    a.download = CV_NAME;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    // Fallback extra (algunos iOS abren visor): abre en pestaña nueva
+    setTimeout(() => {
+      if (!document.hidden) window.open(CV_PATH, '_blank', 'noopener');
+    }, 120);
+  });
+})();
